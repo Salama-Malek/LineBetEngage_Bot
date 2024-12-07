@@ -54,7 +54,7 @@ texts = {
            "Les paiements sont effectués chaque semaine, le mardi, si votre solde dépasse 30 $.\n\n"
            "🎯 *Quels outils vais-je recevoir ?*\n"
            "Nous vous fournissons des bannières, des vidéos et des liens de parrainage pour vos campagnes marketing.",
-    'support': "📞 Pour toute assistance, contactez-nous sur Telegram : [@Linebet_globe](https://t.me/Linebet_globe).",
+    'support': "📞 Pour toute assistance, contactez-nous sur Telegram : [@aff_lb_a](https://t.me/aff_lb_a).",
     'menu_buttons': [
         ["📝 S'inscrire", "💸 Infos sur les commissions"],
         ["📈 Conseils marketing", "❓ FAQ"],

@@ -54,7 +54,7 @@ texts = {
            "Malipo hufanywa kila wiki Jumanne ikiwa salio lako linazidi $30.\n\n"
            "🎯 *Ninapata zana gani?*\n"
            "Tunatoa mabango, video, na viungo vya rufaa kwa ajili ya masoko.",
-    'support': "📞 Kwa msaada, wasiliana nasi kwenye Telegram: [@Linebet_globe](https://t.me/Linebet_globe).",
+    'support': "📞 Kwa msaada, wasiliana nasi kwenye Telegram: [@aff_lb_a](https://t.me/aff_lb_a).",
     'menu_buttons': [
         ['📝 Jisajili', '💸 Taarifa za Kamisheni'],
         ['📈 Vidokezo vya Masoko', '❓ Maswali Yanayoulizwa Sana'],
