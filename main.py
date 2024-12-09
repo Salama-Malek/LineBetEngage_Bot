@@ -2,7 +2,7 @@ import os
 from telegram.ext import ApplicationBuilder, ConversationHandler, CommandHandler, MessageHandler, filters
 from dotenv import load_dotenv
 from handlers import (
-    start, choose_language, main_menu, registration_info, handle_registration_choice, ask_for_first_name,
+    ask_for_promo_code, start, choose_language, main_menu, registration_info, handle_registration_choice, ask_for_first_name,
     ask_for_last_name, ask_for_telegram, ask_for_email, ask_for_phone, ask_for_country, save_registration, fallback
 )
 from scheduler import schedule_weekly_summary
@@ -35,16 +35,12 @@ def main():
             REG_EMAIL: [MessageHandler(filters.TEXT & ~filters.COMMAND, ask_for_email)],
             REG_PHONE: [MessageHandler(filters.TEXT & ~filters.COMMAND, ask_for_phone)],
             REG_COUNTRY: [MessageHandler(filters.TEXT & ~filters.COMMAND, ask_for_country)],
-            REG_PROMO: [MessageHandler(filters.TEXT & ~filters.COMMAND, save_registration)],
+            REG_PROMO: [MessageHandler(filters.TEXT & ~filters.COMMAND, ask_for_promo_code)],
         },
-        fallbacks=[CommandHandler('cancel', start)] 
+        fallbacks=[MessageHandler(filters.ALL, fallback)]
     )
-
-
-    # Add handlers to the bot
+    
     app.add_handler(conv_handler)
-
-    # Start the bot
     app.run_polling()
 
 if __name__ == "__main__":

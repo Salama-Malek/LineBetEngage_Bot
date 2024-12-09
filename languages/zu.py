@@ -33,7 +33,19 @@ texts = {
     'ask_country': "🌍 Sicela usho izwe ohlala kulo.",
     'error_invalid_country': "❌ Igama lezwe kufanele libe nezinhlamvu kuphela. Sicela unikeze izwe elivumelekile.",
     'ask_promo_code': "🎫 Ekugcineni, yimuphi ikhodi yephromo oyikhethayo? (isibonelo: 'Linebet2024')",
-    'manual_register_link': "🔗 Sicela usebenzise lesi sixhumanisi ukubhalisela: [Bhalisela Lapha](https://lb-aff.com/L?tag=d_3895532m_22613c_ref&site=3895532&ad=22613&r=sign-up)",
+    "manual_register_instruction": "🔗 *Ngiyabonga ngokukhetha ukubhalisa ngesandla!*\n\n"
+                               "Sicela usebenzise lesi sixhumanisi ukubhalisa: [Bhalisa Lapha](https://lb-aff.com/L?tag=d_3895532m_22613c_ref&site=3895532&ad=22613&r=sign-up).\n\n"
+                               "Ngemuva kokuphetha ukubhalisa kwakho, sicela uthumele le datha elandelayo ku [@aff_lb_a](https://t.me/aff_lb_a).\n\n"
+                               "📄 *Ulwazi Oludingekayo:*\n"
+                               "1. *Igama Eliphelele:*\n"
+                               "2. *Igama Lomsebenzisi weTelegram:*\n"
+                               "3. *I-imeyili:*\n"
+                               "4. *Inombolo Yocingo:*\n"
+                               "5. *Izwe:*\n"
+                               "6. *Ikhodi Yakho Ye-Promo Oyithandayo:*\n\n"
+                               "*📌 Qaphela:* Inombolo engu-6 ibhekene nekhowudi yakho yephromoshini (PromoCode). Zizwe ukhululekile ukukhetha noma iyiphi ikhodi yephromoshini oyifunayo, njengokuthi \"Amro05\".\n\n"
+                               "*Ngiyabonga ngokusebenzisana kwakho!*",
+    # 'manual_register_link': "🔗 Sicela usebenzise lesi sixhumanisi ukubhalisela: [Bhalisela Lapha](https://lb-aff.com/L?tag=d_3895532m_22613c_ref&site=3895532&ad=22613&r=sign-up)",
     'invalid_option': "❌ Sicela ukhethe inketho evumelekile kusuka kumenyu.",
     'registration_success': "✅ Siyabonga ngokubhalisela! Ithimba lethu lizobuyekeza imininingwane yakho bese likuthinta ngokushesha.",
     'commission': "💸 *Ulwakhiwo Lwekhomishini:*\n\n"
@@ -54,7 +66,7 @@ texts = {
            "Izinkokhelo zikhokhwa masonto onke ngoLwesibili uma ibhalansi yakho idlula u-$30.\n\n"
            "🎯 *Ngizothola muphi amathuluzi?*\n"
            "Sinikeza ngama-banner, amavidiyo, nezixhumanisi zokumaketha.",
-    'support': "📞 Ngosizo, xhumana nathi kuTelegram: [@aff_lb_a](https://t.me/aff_lb_a).",
+    'support': "📞 Ngosizo, xhumana nathi kuTelegram: [@Linebet_globe](https://t.me/Linebet_globe).",
     'menu_buttons': [
         ['📝 Bhalisela', '💸 Ulwazi Lwekhomishini'],
         ['📈 Izeluleko Zokumaketha', '❓ Imibuzo Ebuzwa Kaningi'],

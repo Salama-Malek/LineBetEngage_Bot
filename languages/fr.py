@@ -33,7 +33,19 @@ texts = {
     'ask_country': "🌍 Dans quel *pays* habitez-vous ?",
     'error_invalid_country': "❌ Le nom du pays doit contenir uniquement des lettres. Veuillez fournir un pays valide.",
     'ask_promo_code': "🎫 Enfin, quel est votre *code promo* préféré (par exemple, 'Linebet2024') ?",
-    'manual_register_link': "🔗 Veuillez utiliser ce lien pour vous inscrire : [S'inscrire ici](https://lb-aff.com/L?tag=d_3895532m_22613c_ref&site=3895532&ad=22613&r=sign-up)",
+    "manual_register_instruction": "🔗 *Merci d'avoir choisi de vous inscrire manuellement!*\n\n"
+                               "Veuillez utiliser ce lien pour vous inscrire : [Inscrivez-vous ici](https://lb-aff.com/L?tag=d_3895532m_22613c_ref&site=3895532&ad=22613&r=sign-up).\n\n"
+                               "Après avoir complété votre inscription, veuillez envoyer les données suivantes à [@aff_lb_a](https://t.me/aff_lb_a).\n\n"
+                               "📄 *Informations requises:*\n"
+                               "1. *Nom complet:*\n"
+                               "2. *Nom d'utilisateur Telegram:*\n"
+                               "3. *Email:*\n"
+                               "4. *Numéro de téléphone:*\n"
+                               "5. *Pays:*\n"
+                               "6. *Votre code promo préféré:*\n\n"
+                               "*📌 Note:* Le point 6 concerne votre code promotionnel (PromoCode). N'hésitez pas à choisir un code promo de votre choix, comme \"Amro05\".\n\n"
+                               "*Merci pour votre coopération!*",
+    # 'manual_register_link': "🔗 Veuillez utiliser ce lien pour vous inscrire : [S'inscrire ici](https://lb-aff.com/L?tag=d_3895532m_22613c_ref&site=3895532&ad=22613&r=sign-up)",
     'invalid_option': "❌ Veuillez choisir une option valide dans le menu.",
     'registration_success': "✅ Merci pour votre inscription ! Notre équipe examinera vos informations et vous contactera prochainement.",
     'commission': "💸 *Structure des commissions :*\n\n"
@@ -54,7 +66,7 @@ texts = {
            "Les paiements sont effectués chaque semaine, le mardi, si votre solde dépasse 30 $.\n\n"
            "🎯 *Quels outils vais-je recevoir ?*\n"
            "Nous vous fournissons des bannières, des vidéos et des liens de parrainage pour vos campagnes marketing.",
-    'support': "📞 Pour toute assistance, contactez-nous sur Telegram : [@aff_lb_a](https://t.me/aff_lb_a).",
+    'support': "📞 Pour toute assistance, contactez-nous sur Telegram : [@Linebet_globe](https://t.me/Linebet_globe).",
     'menu_buttons': [
         ["📝 S'inscrire", "💸 Infos sur les commissions"],
         ["📈 Conseils marketing", "❓ FAQ"],

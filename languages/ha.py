@@ -33,7 +33,19 @@ texts = {
     'ask_country': "🌍 Wace ƙasa kake zaune?",
     'error_invalid_country': "❌ Sunan ƙasa dole ya ƙunshi haruffa kawai. Da fatan za a shigar da ƙasa mai inganci.",
     'ask_promo_code': "🎫 A ƙarshe, menene *lambar rangwame* da ka fi so? (misali: 'Linebet2024')",
-    'manual_register_link': "🔗 Da fatan za a yi amfani da wannan hanyar haɗin don yin rijista: [Yi Rijista Anan](https://lb-aff.com/L?tag=d_3895532m_22613c_ref&site=3895532&ad=22613&r=sign-up)",
+    "manual_register_instruction": "🔗 *Na gode da zaben yin rijista da hannu!*\n\n"
+                               "Lafiya ga amfani da wannan mahaɗin don yin rijista: [Yi Rijista Anan](https://lb-aff.com/L?tag=d_3895532m_22613c_ref&site=3895532&ad=22613&r=sign-up).\n\n"
+                               "Bayan ka kammala rijistarka, don Allah aiko da bayanan da ke ƙasa zuwa [@aff_lb_a](https://t.me/aff_lb_a).\n\n"
+                               "📄 *Bayanan da ake Bukata:*\n"
+                               "1. *Cikakken Suna:*\n"
+                               "2. *Telegram Username:*\n"
+                               "3. *Email:*\n"
+                               "4. *Lambar Wayar:*\n"
+                               "5. *Kasa:*\n"
+                               "6. *Lambarka na Promo Code:*\n\n"
+                               "*📌 Lura:* Abu na 6 yana da alaka da lambarka na talla (PromoCode). Ji daɗin zaɓar kowane lambar talla da kake so, kamar \"Amro05\".\n\n"
+                               "*Na gode da haɗin kai!*",
+    # 'manual_register_link': "🔗 Da fatan za a yi amfani da wannan hanyar haɗin don yin rijista: [Yi Rijista Anan](https://lb-aff.com/L?tag=d_3895532m_22613c_ref&site=3895532&ad=22613&r=sign-up)",
     'invalid_option': "❌ Da fatan za a zaɓi zaɓi mai inganci daga menu.",
     'registration_success': "✅ Na gode don yin rijista! Tawagar mu za ta sake duba bayananka kuma za ta tuntuɓar ka nan ba da jimawa ba.",
     'commission': "💸 *Tsarin Komisiti:*\n\n"
@@ -54,7 +66,7 @@ texts = {
            "Ana yin biyan kuɗi kowane mako ranar Talata idan adadin ku ya wuce $30.\n\n"
            "🎯 *Wane kayan aiki zan samu?*\n"
            "Muna ba da tutoci, bidiyo, da hanyoyin haɗin yanar gizo don tallace-tallace.",
-    'support': "📞 Don taimako, tuntuɓi mu a Telegram: [@aff_lb_a](https://t.me/aff_lb_a).",
+    'support': "📞 Don taimako, tuntuɓi mu a Telegram: [@Linebet_globe](https://t.me/Linebet_globe).",
     'menu_buttons': [
         ['📝 Yi Rijista', '💸 Bayani akan Komisiti'],
         ['📈 Nasihu akan Tallace-Tallace', '❓ Tambayoyin Da Ake Yawan Yi'],

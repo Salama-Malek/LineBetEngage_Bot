@@ -8,7 +8,8 @@ texts = {
         ['🇷🇺 Русский', '🇮🇷 فارسی', '🇰🇪 Kiswahili'],
         ['🇳🇬 Hausa', '🇪🇹 አማርኛ', '🇿🇦 isiZulu'],
         ['🇳🇬 Igbo']
-    ],    'registration_choice': "How would you like to register?\n\n"
+    ],
+    'registration_choice': "How would you like to register?\n\n"
                            "🌐 *Register Manually*: We'll provide you with a link to sign up.\n"
                            "🤖 *Register Step by Step*: Provide your details here, and we'll register for you.",
     'button_register_manually': "🌐 Register Manually",
@@ -33,7 +34,19 @@ texts = {
     'ask_country': "🌍 What *country* do you live in?",
     'error_invalid_country': "❌ Country name must contain letters only. Please provide a valid country.",
     'ask_promo_code': "🎫 Finally, what is your preferred *promo code* (e.g., 'Linebet2024')?",
-    'manual_register_link': "🔗 Please use this link to register: [Register Here](https://lb-aff.com/L?tag=d_3895532m_22613c_ref&site=3895532&ad=22613&r=sign-up)",
+    "manual_register_instruction": "🔗 *Thank you for choosing to register manually!*\n\n"
+                                   "Please use this link to register: [Register Here](https://lb-aff.com/L?tag=d_3895532m_22613c_ref&site=3895532&ad=22613&r=sign-up).\n\n"
+                                   "After you complete your registration, please send the following data to [@aff_lb_a](https://t.me/aff_lb_a).\n\n"
+                                   "📄 *Required Information:*\n"
+                                   "1. *Full Name:*\n"
+                                   "2. *Telegram Username:*\n"
+                                   "3. *Email:*\n"
+                                   "4. *Phone Number:*\n"
+                                   "5. *Country:*\n"
+                                   "6. *Your Preferred Promo Code:*\n\n"
+                                   "*📌 Note:* Point 6 pertains to your promotional code (PromoCode). Feel free to choose any promo code you like, such as \"Amro05\".\n\n"
+                                   "*Thank you for your cooperation!*",
+    # 'manual_register_link': "🔗 Please use this link to register: [Register Here](https://lb-aff.com/L?tag=d_3895532m_22613c_ref&site=3895532&ad=22613&r=sign-up)",
     'invalid_option': "❌ Please choose a valid option from the menu.",
     'registration_success': "✅ Thank you for registering! Our team will review your details and contact you shortly.",
     'commission': "💸 *Commission Structure:*\n\n"
@@ -54,7 +67,7 @@ texts = {
            "Payouts are made weekly every Tuesday if your balance exceeds $30.\n\n"
            "🎯 *What tools do I get?*\n"
            "We provide banners, videos, and referral links for marketing.",
-    'support': "📞 For support, contact us on Telegram: [@aff_lb_a](https://t.me/aff_lb_a).",
+    'support': "📞 For support, contact us on Telegram: [@Linebet_globe](https://t.me/Linebet_globe).",
     'menu_buttons': [
         ['📝 Register', '💸 Commission Info'],
         ['📈 Marketing Tips', '❓ FAQs'],

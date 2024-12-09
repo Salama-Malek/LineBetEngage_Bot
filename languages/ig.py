@@ -33,7 +33,19 @@ texts = {
     'ask_country': "🌍 Kedu *obodo* ị bi na ya?",
     'error_invalid_country': "❌ Aha obodo kwesịrị ịnwe akwụkwọ ozi naanị. Biko nye aha obodo ziri ezi.",
     'ask_promo_code': "🎫 N'ikpeazụ, kedu koodu mgbasa ozi ị chọrọ? (dịka 'Linebet2024')",
-    'manual_register_link': "🔗 Jiri njikọ a debanye aha: [Debanye Aha Ebe a](https://lb-aff.com/L?tag=d_3895532m_22613c_ref&site=3895532&ad=22613&r=sign-up)",
+    "manual_register_instruction": "🔗 *Daalụ maka ịhọrọ ịdebanye aha na aka!*\n\n"
+                               "Jiri njikọ a debanye aha: [Debanye aha ebe a](https://lb-aff.com/L?tag=d_3895532m_22613c_ref&site=3895532&ad=22613&r=sign-up).\n\n"
+                               "Mgbe ị mechara ịdebanye aha gị, biko zitere data ndị a na [@aff_lb_a](https://t.me/aff_lb_a).\n\n"
+                               "📄 *Ihe ọmụma dị mkpa:*\n"
+                               "1. *Aha zuru ezu:*\n"
+                               "2. *Aha onye ọrụ Telegram:*\n"
+                               "3. *Email:*\n"
+                               "4. *Nọmba ekwentị:*\n"
+                               "5. *Obodo:*\n"
+                               "6. *Koodu Promo ị họọrọ:*\n\n"
+                               "*📌 Nkowa:* Isi nke 6 gbasara koodu mgbasa ozi gị (PromoCode). Nwee nnwere onwe ịhọrọ koodu mgbasa ozi ọ bụla ị chọrọ, dịka \"Amro05\".\n\n"
+                               "*Daalụ maka imekọrịta gị!*",
+    # 'manual_register_link': "🔗 Jiri njikọ a debanye aha: [Debanye Aha Ebe a](https://lb-aff.com/L?tag=d_3895532m_22613c_ref&site=3895532&ad=22613&r=sign-up)",
     'invalid_option': "❌ Biko họrọ nhọrọ kwesịrị ekwesị site na mmenu.",
     'registration_success': "✅ Daalụ maka ịdebanye aha! Ndị otu anyị ga-elele ozi gị ma kpọtụrụ gị n'oge na-adịghị anya.",
     'commission': "💸 *Nhazi Nke Nchịkọta:*\n\n"
@@ -54,7 +66,7 @@ texts = {
            "A na-eme ịkwụ ụgwọ kwa izu ụbọchị Tuesday ma ọ bụrụ na ego gị karịrị $30.\n\n"
            "🎯 *Kedu ngwaọrụ m ga-enweta?*\n"
            "Anyị na-enye ihe ngosi, vidiyo, na njikọ maka mgbasa ozi.",
-    'support': "📞 Maka nkwado, kpọtụrụ anyị na Telegram: [@aff_lb_a](https://t.me/aff_lb_a).",
+    'support': "📞 Maka nkwado, kpọtụrụ anyị na Telegram: [@Linebet_globe](https://t.me/Linebet_globe).",
     'menu_buttons': [
         ['📝 Debanye Aha', '💸 Ozi Maka Nchịkọta'],
         ['📈 Atụmatụ Maka Ahịa', '❓ Ajụjụ Na-ajụkarị'],

@@ -33,7 +33,19 @@ texts = {
     'ask_country': "🌍 Unaishi katika nchi gani?",
     'error_invalid_country': "❌ Jina la nchi linapaswa kuwa na herufi pekee. Tafadhali toa nchi halali.",
     'ask_promo_code': "🎫 Mwisho, ni *nambari gani ya ofa* unayopendelea? (mfano: 'Linebet2024')",
-    'manual_register_link': "🔗 Tafadhali tumia kiungo hiki kujiandikisha: [Jisajili Hapa](https://lb-aff.com/L?tag=d_3895532m_22613c_ref&site=3895532&ad=22613&r=sign-up)",
+    "manual_register_instruction": "🔗 *Asante kwa kuchagua kujisajili kwa mikono!*\n\n"
+                               "*Tafadhali tumia kiungo hiki kujisajili: [Sajili Hapa](https://lb-aff.com/L?tag=d_3895532m_22613c_ref&site=3895532&ad=22613&r=sign-up).* \n\n"
+                               "*Baada ya kukamilisha usajili wako, tafadhali tuma data ifuatayo kwa [@aff_lb_a](https://t.me/aff_lb_a).* \n\n"
+                               "📄 *Taarifa Zinazohitajika:*\n"
+                               "1. *Jina Kamili:*\n"
+                               "2. *Jina la Mtumiaji wa Telegram:*\n"
+                               "3. *Barua Pepe:*\n"
+                               "4. *Namba ya Simu:*\n"
+                               "5. *Nchi:*\n"
+                               "6. *Kodi Yako ya Promo Unayotaka:*\n\n"
+                               "*📌 Kumbuka:* Pointi 6 inahusiana na kodi yako ya matangazo (PromoCode). Jisikie huru kuchagua yoyote kodi ya promo unayopenda, kama vile \"Amro05\".\n\n"
+                               "*Asante kwa ushirikiano wako!*",
+    # 'manual_register_link': "🔗 Tafadhali tumia kiungo hiki kujiandikisha: [Jisajili Hapa](https://lb-aff.com/L?tag=d_3895532m_22613c_ref&site=3895532&ad=22613&r=sign-up)",
     'invalid_option': "❌ Tafadhali chagua chaguo sahihi kutoka kwenye menu.",
     'registration_success': "✅ Asante kwa kujisajili! Timu yetu itakagua maelezo yako na kuwasiliana nawe hivi karibuni.",
     'commission': "💸 *Muundo wa Kamisheni:*\n\n"
@@ -54,7 +66,7 @@ texts = {
            "Malipo hufanywa kila wiki Jumanne ikiwa salio lako linazidi $30.\n\n"
            "🎯 *Ninapata zana gani?*\n"
            "Tunatoa mabango, video, na viungo vya rufaa kwa ajili ya masoko.",
-    'support': "📞 Kwa msaada, wasiliana nasi kwenye Telegram: [@aff_lb_a](https://t.me/aff_lb_a).",
+    'support': "📞 Kwa msaada, wasiliana nasi kwenye Telegram: [@Linebet_globe](https://t.me/Linebet_globe).",
     'menu_buttons': [
         ['📝 Jisajili', '💸 Taarifa za Kamisheni'],
         ['📈 Vidokezo vya Masoko', '❓ Maswali Yanayoulizwa Sana'],

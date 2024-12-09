@@ -23,71 +23,65 @@ from dotenv import load_dotenv
 from telegram.helpers import escape_markdown
 from constants import SUPPORTED_LANGUAGES
 
-load_dotenv()  # Load environment variables from .env
+load_dotenv()
 
-# Fetch the Telegram Bot Token and Chat ID from the environment
 BOT_TOKEN = os.getenv("TELEGRAM_TOKEN")
-CHAT_ID = "-1002325909184" 
+CHAT_ID = "-1002325909184"
 
-
-# Set up logging
+# إعداد التسجيل (logging)
+logging.basicConfig(
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    level=logging.INFO
+)
 logger = logging.getLogger(__name__)
 
 
+# Utility function to create reply markup with Back and Main Menu buttons
+def create_reply_markup(buttons, texts, add_back=False, add_main_menu=True):
+    """
+    Creates a reply keyboard markup with optional Back and Main Menu buttons.
+
+    Args:
+        buttons (list): List of buttons for the current step.
+        texts (dict): Dictionary containing button texts.
+        add_back (bool): Whether to include the Back button.
+        add_main_menu (bool): Whether to include the Main Menu button.
+
+    Returns:
+        ReplyKeyboardMarkup: Reply keyboard markup with added navigation buttons.
+    """
+    # Add Back button if requested
+    if add_back:
+        buttons.append([texts["button_back"]])
+
+    # Add Main Menu button if requested
+    if add_main_menu:
+        buttons.append([texts["button_main_menu"]])
+
+    return ReplyKeyboardMarkup(buttons, one_time_keyboard=True, resize_keyboard=True)
+
 # Start command handler
 async def start(update, context):
-    """
-    Initializes the bot, detects the user's language, and displays the welcome message.
-
-    1. Detects the user's preferred language from Telegram (default: English).
-    2. Loads texts dynamically based on the selected language.
-    3. Displays the welcome message and prompts the user to choose their language.
-    """
-    # Detect language or default to English
     lang = (
         update.message.from_user.language_code[:2]
         if update.message.from_user.language_code
         else "en"
     )
-
     context.user_data["language"] = lang if lang in SUPPORTED_LANGUAGES else "en"
+    texts = get_texts(context.user_data["language"])
 
-    # Load texts for the selected language
-    try:
-        texts = get_texts(context.user_data["language"])
-    except KeyError:
-        # Fallback to English if the language is not supported
-        texts = get_texts("en")
-
-    # Display welcome message and language selection options
-    try:
-        reply_markup = ReplyKeyboardMarkup(
-            texts["languages"], one_time_keyboard=True, resize_keyboard=True
-        )
-        await update.message.reply_text(texts["welcome"], parse_mode=ParseMode.MARKDOWN)
-        await update.message.reply_text(
-            texts["language_prompt"], reply_markup=reply_markup
-        )
-    except KeyError as e:
-        # Handle missing keys in the texts dictionary
-        await update.message.reply_text(
-            "❌ An error occurred while processing your request. Please try again later.",
-            parse_mode=ParseMode.MARKDOWN,
-        )
-        # Log the error (ensure logging is set up in your app)
-        print(f"KeyError in start function: {e}")
-        return ConversationHandler.END
-
+    reply_markup = ReplyKeyboardMarkup(
+        texts["languages"], one_time_keyboard=True, resize_keyboard=True
+    )
+    await update.message.reply_text(texts["welcome"], parse_mode=ParseMode.MARKDOWN)
+    await update.message.reply_text(
+        texts["language_prompt"], reply_markup=reply_markup
+    )
     return LANGUAGE
 
 
 # Language selection handler
 async def choose_language(update, context):
-    """
-    Handles language selection by mapping the user's choice to a language code.
-    Loads texts for the selected language and displays the main menu.
-    """
-    # Dynamically map emoji text to language code from available languages
     available_languages = {
         "en": {"language_name": "🇬🇧 English"},
         "fr": {"language_name": "🇫🇷 Français"},
@@ -100,63 +94,34 @@ async def choose_language(update, context):
         "zu": {"language_name": "🇿🇦 isiZulu"},
         "ig": {"language_name": "🇳🇬 Igbo"},
     }
-
     lang_map = {
         details["language_name"]: code for code, details in available_languages.items()
     }
-
-    # Get user's language selection
     selected_language = update.message.text
     lang = lang_map.get(selected_language)
 
     if not lang:
-        # Handle invalid selection
-        await update.message.reply_text(
-            "❌ Invalid language selection. Defaulting to English."
-        )
-        lang = "en"  # Default to English if the selection is invalid
+        lang = "en"
 
     context.user_data["language"] = lang
+    texts = get_texts(lang)
 
-    # Load texts for the selected language
-    try:
-        texts = get_texts(lang)
-    except KeyError:
-        # Log the error and default to English texts
-        print(f"Error: Missing texts for language '{lang}'. Falling back to English.")
-        texts = get_texts("en")
-        context.user_data["language"] = "en"
-
-    # Show main menu in the selected language
     reply_markup = ReplyKeyboardMarkup(
         texts["menu_buttons"], one_time_keyboard=True, resize_keyboard=True
     )
     await update.message.reply_text(
         texts["main_menu_prompt"], reply_markup=reply_markup
     )
-
-    # Log the selected language
-    print(f"Language selected: {lang}")
     return MAIN_MENU
 
 
+# Main menu handler
 async def main_menu(update, context):
-    """
-    Displays the main menu and handles user choices.
-    """
-    lang = context.user_data.get(
-        "language", "en"
-    )  # Default to English if language is not set
-    texts = get_texts(lang)  # Fetch texts based on the language
-    user_choice = update.message.text  # The button text sent back by Telegram
+    lang = context.user_data.get("language", "en")
+    texts = get_texts(lang)
 
-    # Debugging
-    print(f"User choice: {user_choice}")
-    print(
-        f"Available buttons: {[texts['button_register'], texts['button_commission'], texts['button_marketing'], texts['button_faq'], texts['button_support'], texts['button_back']]}"
-    )
+    user_choice = update.message.text
 
-    # Match user choice with dynamic text
     if user_choice == texts["button_register"]:
         return await start_registration(update, context)
 
@@ -176,345 +141,450 @@ async def main_menu(update, context):
         await update.message.reply_text(texts["support"], parse_mode="Markdown")
         return MAIN_MENU
 
-    if user_choice == texts["button_back"]:
+    if user_choice == texts["button_back"] or user_choice == texts["button_main_menu"]:
         return await start(update, context)
 
-    # Handle invalid input
     await update.message.reply_text(
-        texts.get(
-            "invalid_option",
-            "❌ Invalid option. Please choose a valid option from the menu.",
-        )
+        texts.get("invalid_option", "❌ Invalid option. Please try again."),
+        parse_mode="Markdown",
     )
     return MAIN_MENU
 
 
+# Registration process handlers
 async def start_registration(update, context):
-    context.user_data["current_step"] = "registration"  # Track current step
-
+    context.user_data["current_step"] = "registration"
     lang = context.user_data.get("language", "en")
     texts = get_texts(lang)
 
-    buttons = [
-        [texts["button_register_manually"], texts["button_register_step"]],
-        [texts["button_back"]],  # Back button
-    ]
-    reply_markup = ReplyKeyboardMarkup(buttons, one_time_keyboard=True, resize_keyboard=True)
+    buttons = [[texts["button_register_manually"], texts["button_register_step"]]]
+    reply_markup = create_reply_markup(buttons, texts, add_main_menu=True)
 
     await update.message.reply_text(
-        texts["registration_choice"],
-        reply_markup=reply_markup,
-        parse_mode="Markdown",
+        texts["registration_choice"], reply_markup=reply_markup, parse_mode="Markdown"
     )
     return REGISTRATION_INFO
 
 
-
-async def handle_registration_choice(update, context):
-    """
-    Handles the user's choice between manual or bot-assisted registration.
-    Ensures state consistency and prevents invalid input issues.
-    """
-    user_choice = update.message.text.strip()  # Get the user's choice
-    lang = context.user_data.get('language', 'en')  # Get the user's selected language
-    texts = get_texts(lang)  # Load texts in the selected language
-
-    # Debugging: Log the user's choice and the expected options
-    print(f"User choice: {user_choice}")
-    print(f"Expected options: {texts['button_register_manually']}, {texts['button_register_step']}")
-
-    # Handle "Register Manually"
-    if user_choice == texts['button_register_manually']:
-        # Clear registration data (if any) to prevent conflicts
-        context.user_data['registration'] = None
-
-        # Send the manual registration link
-        await update.message.reply_text(
-            texts.get(
-                'manual_register_link',
-                "🔗 Please use this link to register: [Register Here](https://lb-aff.com/L?tag=d_3895532m_22613c_ref&site=3895532&ad=22613&r=sign-up)"
-            ),
-            parse_mode='Markdown'
-        )
-
-        # Clear the menu and notify the user that they can go back
-        await update.message.reply_text(
-            texts.get('registration_done', "✅ Thank you! Please return to the main menu to continue."),
-            reply_markup=ReplyKeyboardMarkup(
-                [[texts['button_back']]],
-                one_time_keyboard=True,
-                resize_keyboard=True
-            ),
-            parse_mode='Markdown'
-        )
-
-        # Reset to the main menu
-        return MAIN_MENU
-
-    # Handle "Register Step by Step"
-    elif user_choice == texts['button_register_step']:
-        # Initialize new registration data
-        context.user_data['registration'] = {}  # Clear any previous data
-        await update.message.reply_text(
-            texts['ask_first_name'],
-            parse_mode='Markdown'
-        )
-        return REG_NAME  # Proceed to ask for the first name
-
-    # Handle invalid input in the registration menu
-    else:
-        # If user input doesn't match any expected option
-        await update.message.reply_text(
-            texts.get('invalid_option', "❌ Please choose a valid option from the menu."),
-            parse_mode='Markdown',
-            reply_markup=ReplyKeyboardMarkup(
-                [
-                    [texts['button_register_manually'], texts['button_register_step']],
-                    [texts['button_back']]
-                ],
-                one_time_keyboard=True,
-                resize_keyboard=True
-            )
-        )
-        return REGISTRATION_INFO  # Stay in the registration menu
-
-async def ask_for_first_name(update, context):
-    context.user_data["current_step"] = "ask_first_name"  # Track current step
-
+# Generic function to handle back and main menu buttons in registration steps
+async def handle_back_or_main_menu(update, context, current_step):
     lang = context.user_data.get("language", "en")
     texts = get_texts(lang)
 
     if update.message.text == texts["button_back"]:
         return await start_registration(update, context)
 
+    if update.message.text == texts["button_main_menu"]:
+        return await main_menu(update, context)
+
+    return current_step
+
+async def handle_registration_choice(update, context):
+    """
+    Handles the user's choice between manual or bot-assisted registration.
+    """
+    user_choice = update.message.text.strip()  # Get the user's choice
+    lang = context.user_data.get("language", "en")  # Get the user's selected language
+    texts = get_texts(lang)  # Load texts in the selected language
+
+    # Log the user's choice for debugging
+    logger.info(f"User {update.message.from_user.id} chose: {user_choice}")
+
+    # Handle "Back" button
+    if user_choice == texts.get("button_back"):
+        # Go back to the main registration menu
+        return await start_registration(update, context)
+
+    # Handle "Main Menu" button
+    if user_choice == texts.get("button_main_menu"):
+        return await main_menu(update, context)
+
+    # Handle "Register Manually"
+    if user_choice == texts.get("button_register_manually"):
+        # Send instruction message to the user
+        await update.message.reply_text(
+            texts.get(
+                "manual_register_instruction",
+                "🔗 Please send your registration details to activate your account."
+            ),
+            parse_mode=ParseMode.MARKDOWN
+        )
+
+        # Notify the group chat about the manual registration
+        try:
+            user = update.message.from_user
+            username = f"@{user.username}" if user.username else "N/A"
+            user_id = user.id
+
+            # Define the fixed group message
+            group_message = (
+                f"📝 *Manual Registration Selected*:\n"
+                f"👤 *User:* `{escape_markdown(username, version=2)}`\n"
+                f"🆔 *User ID:* `{user_id}`"
+            )
+
+            # Send the group message using Telegram Bot API
+            url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
+            payload = {
+                "chat_id": CHAT_ID,
+                "text": group_message,
+                "parse_mode": "MarkdownV2"
+            }
+            response = requests.post(url, data=payload)
+            if response.status_code != 200:
+                logger.error(f"Failed to send message to group chat: {response.text}")
+        except Exception as e:
+            logger.error(f"Error sending message to group chat: {e}")
+
+        # Return to the main menu
+        return MAIN_MENU
+
+    # Handle "Register Step by Step"
+    elif user_choice == texts.get("button_register_step"):
+        # Initialize new registration data
+        context.user_data["registration"] = {}  # Clear any previous data
+        await update.message.reply_text(
+            texts["ask_first_name"], parse_mode=ParseMode.MARKDOWN
+        )
+        return REG_NAME  # Proceed to ask for the first name
+
+    # Handle invalid input
+    await update.message.reply_text(
+        texts.get("invalid_option", "❌ Please choose a valid option from the menu."),
+        reply_markup=ReplyKeyboardMarkup(
+            [
+                [texts.get("button_register_manually"), texts.get("button_register_step")],
+                [texts.get("button_back"), texts.get("button_main_menu")],
+            ],
+            one_time_keyboard=True,
+            resize_keyboard=True,
+        ),
+        parse_mode=ParseMode.MARKDOWN
+    )
+    return REGISTRATION_INFO
+
+
+async def ask_for_first_name(update, context):
+    lang = context.user_data.get("language", "en")
+    texts = get_texts(lang)
+
+    # Handle Back and Main Menu navigation
+    if update.message.text == texts["button_back"]:
+        return await start_registration(update, context)
+    if update.message.text == texts["button_main_menu"]:
+        return await main_menu(update, context)
+
+    # Validate first name
     first_name = update.message.text.strip()
     if not first_name:
         await update.message.reply_text(
             texts.get(
-                "error_empty_first_name",
-                "❌ First name cannot be empty. Please provide your *first name*.",
+                "error_empty_first_name", "❌ First name cannot be empty. Try again."
             ),
             parse_mode="Markdown",
         )
         return REG_NAME
 
+    # Save the first name
     context.user_data["registration"]["first_name"] = first_name
-    reply_markup = ReplyKeyboardMarkup(
-        [[texts["button_back"]]], one_time_keyboard=True, resize_keyboard=True
-    )
+
+    # Show the next step with Back and Main Menu buttons
+    buttons = []
+    reply_markup = create_reply_markup(buttons, texts, add_back=True, add_main_menu=True)
+
     await update.message.reply_text(
-        texts.get("ask_last_name", "📝 Great! Now, what is your *last name*?"),
+        texts.get("ask_last_name", "📝 Great! Now, your last name?"),
         reply_markup=reply_markup,
         parse_mode="Markdown",
     )
     return REG_LAST_NAME
 
+
 async def ask_for_last_name(update, context):
-    """
-    Collects the user's last name and redirects back to the registration menu if the Back button is clicked.
-    """
-    lang = context.user_data.get('language', 'en')
+    lang = context.user_data.get("language", "en")
     texts = get_texts(lang)
 
-    # If the user presses Back, return to the registration menu
-    if update.message.text == texts['button_back']:
-        return await start_registration(update, context)
+    # Handle Back and Main Menu navigation
+    if update.message.text == texts["button_back"]:
+        return await ask_for_first_name(update, context)
+    if update.message.text == texts["button_main_menu"]:
+        return await main_menu(update, context)
 
     # Validate last name
     last_name = update.message.text.strip()
     if not last_name:
         await update.message.reply_text(
-            texts.get('error_empty_last_name', "❌ Last name cannot be empty. Please provide your *last name*."),
-            parse_mode='Markdown'
+            texts.get("error_empty_last_name", "❌ Last name cannot be empty."),
+            parse_mode="Markdown",
         )
         return REG_LAST_NAME
 
     # Save the last name
-    context.user_data['registration']['last_name'] = last_name
+    context.user_data["registration"]["last_name"] = last_name
 
-    # Ask for the Telegram username, showing only the Back button
-    reply_markup = ReplyKeyboardMarkup([[texts['button_back']]], one_time_keyboard=True, resize_keyboard=True)
+    # Show the next step with Back and Main Menu buttons
+    buttons = []
+    reply_markup = create_reply_markup(buttons, texts, add_back=True, add_main_menu=True)
+
     await update.message.reply_text(
-        texts.get('ask_telegram_username', "📛 Great! Now, what is your *Telegram username*?"),
+        texts.get("ask_telegram_username", "📛 Your Telegram username?"),
         reply_markup=reply_markup,
-        parse_mode='Markdown'
+        parse_mode="Markdown",
     )
     return REG_TELEGRAM
 
 
 async def ask_for_telegram(update, context):
-    """
-    Collects the user's Telegram username and redirects back to the registration menu if the Back button is clicked.
-    """
-    lang = context.user_data.get('language', 'en')
+    current_step = await handle_back_or_main_menu(update, context, REG_TELEGRAM)
+    if current_step != REG_TELEGRAM:
+        return current_step
+
+    lang = context.user_data.get("language", "en")
     texts = get_texts(lang)
 
-    # If the user presses Back, return to the registration menu
-    if update.message.text == texts['button_back']:
-        return await start_registration(update, context)
-
-    # Validate Telegram username
     telegram_username = update.message.text.strip()
-    if not telegram_username.startswith('@'):
+    if not telegram_username.startswith("@"):
         await update.message.reply_text(
-            texts.get('error_invalid_telegram', "❌ Telegram username must start with '@'. Please enter a valid username."),
-            parse_mode='Markdown'
+            texts.get(
+                "error_invalid_telegram",
+                "❌ Telegram username must start with '@'. Please enter a valid username.",
+            ),
+            parse_mode="Markdown",
         )
         return REG_TELEGRAM
 
-    # Save the Telegram username
-    context.user_data['registration']['telegram'] = telegram_username
+    context.user_data["registration"]["telegram"] = telegram_username
+    buttons = []
+    reply_markup = create_reply_markup(buttons, texts)
 
-    # Ask for the email address, showing only the Back button
-    reply_markup = ReplyKeyboardMarkup([[texts['button_back']]], one_time_keyboard=True, resize_keyboard=True)
     await update.message.reply_text(
-        texts.get('ask_email', "📧 What is your *email address*?"),
+        texts.get("ask_email", "📧 What is your *email address*?"),
         reply_markup=reply_markup,
-        parse_mode='Markdown'
+        parse_mode="Markdown",
     )
     return REG_EMAIL
 
 
-async def ask_for_email(update, context):
-    """
-    Collects the user's email address and redirects back to the registration menu if the Back button is clicked.
-    """
-    lang = context.user_data.get('language', 'en')
+# Repeat similar handlers for email, phone, country, and promo code...
+
+# Main Menu Button Handling
+async def handle_main_menu(update, context):
+    lang = context.user_data.get("language", "en")
     texts = get_texts(lang)
 
-    # If the user presses Back, return to the registration menu
-    if update.message.text == texts['button_back']:
-        return await start_registration(update, context)
+    reply_markup = ReplyKeyboardMarkup(
+        texts["menu_buttons"], one_time_keyboard=True, resize_keyboard=True
+    )
+    await update.message.reply_text(
+        texts["main_menu_prompt"], reply_markup=reply_markup
+    )
+    return MAIN_MENU
 
-    # Validate email format
+
+async def ask_for_email(update, context):
+    current_step = await handle_back_or_main_menu(update, context, REG_EMAIL)
+    if current_step != REG_EMAIL:
+        return current_step
+
+    lang = context.user_data.get("language", "en")
+    texts = get_texts(lang)
+
     email = update.message.text.strip()
     email_pattern = r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)"
     if not re.match(email_pattern, email):
         await update.message.reply_text(
-            texts.get('error_invalid_email', "❌ Invalid email address. Please provide a valid email."),
-            parse_mode='Markdown'
+            texts.get(
+                "error_invalid_email",
+                "❌ Invalid email address. Please provide a valid email.",
+            ),
+            parse_mode="Markdown",
         )
         return REG_EMAIL
 
-    # Save the email
-    context.user_data['registration']['email'] = email
+    context.user_data["registration"]["email"] = email
+    buttons = []
+    reply_markup = create_reply_markup(buttons, texts)
 
-    # Ask for the phone number, showing only the Back button
-    reply_markup = ReplyKeyboardMarkup([[texts['button_back']]], one_time_keyboard=True, resize_keyboard=True)
     await update.message.reply_text(
-        texts.get('ask_phone_number', "📱 What is your *phone number*?"),
+        texts.get("ask_phone_number", "📱 What is your *phone number*?"),
         reply_markup=reply_markup,
-        parse_mode='Markdown'
+        parse_mode="Markdown",
     )
     return REG_PHONE
 
 
 async def ask_for_phone(update, context):
-    """
-    Collects the user's phone number and redirects back to the registration menu if the Back button is clicked.
-    """
-    lang = context.user_data.get('language', 'en')
+    current_step = await handle_back_or_main_menu(update, context, REG_PHONE)
+    if current_step != REG_PHONE:
+        return current_step
+
+    lang = context.user_data.get("language", "en")
     texts = get_texts(lang)
 
-    # If the user presses Back, return to the registration menu
-    if update.message.text == texts['button_back']:
-        return await start_registration(update, context)
-
-    # Validate phone number
     phone = update.message.text.strip()
     phone_pattern = r"^\+?[0-9]{7,15}$"  # Allow optional '+' for international numbers
     if not re.match(phone_pattern, phone):
         await update.message.reply_text(
-            texts.get('error_invalid_phone', "❌ Phone number must be numeric and 7-15 digits long. Please enter a valid phone number."),
-            parse_mode='Markdown'
+            texts.get(
+                "error_invalid_phone",
+                "❌ Phone number must be numeric and 7-15 digits long. Please enter a valid phone number.",
+            ),
+            parse_mode="Markdown",
         )
         return REG_PHONE
 
-    # Save phone number
-    context.user_data['registration']['phone'] = phone
+    context.user_data["registration"]["phone"] = phone
+    buttons = []
+    reply_markup = create_reply_markup(buttons, texts)
 
-    # Ask for the country, showing only the Back button
-    reply_markup = ReplyKeyboardMarkup([[texts['button_back']]], one_time_keyboard=True, resize_keyboard=True)
     await update.message.reply_text(
-        texts.get('ask_country', "🌍 Which *country* are you in?"),
+        texts.get("ask_country", "🌍 Which *country* are you in?"),
         reply_markup=reply_markup,
-        parse_mode='Markdown'
+        parse_mode="Markdown",
     )
     return REG_COUNTRY
 
 
 async def ask_for_country(update, context):
-    """
-    Collects the user's country and redirects back to the registration menu if the Back button is clicked.
-    """
-    lang = context.user_data.get('language', 'en')
+    current_step = await handle_back_or_main_menu(update, context, REG_COUNTRY)
+    if current_step != REG_COUNTRY:
+        return current_step
+
+    lang = context.user_data.get("language", "en")
     texts = get_texts(lang)
 
-    # If the user presses Back, return to the registration menu
-    if update.message.text == texts['button_back']:
-        return await start_registration(update, context)
-
-    # Validate country name (must contain only letters)
     country = update.message.text.strip()
     if not country.isalpha():
         await update.message.reply_text(
-            texts.get('error_invalid_country', "❌ Country name must contain only letters. Please enter a valid country."),
-            parse_mode='Markdown'
+            texts.get(
+                "error_invalid_country",
+                "❌ Country name must contain only letters. Please enter a valid country.",
+            ),
+            parse_mode="Markdown",
         )
         return REG_COUNTRY
 
-    # Save the country
-    context.user_data['registration']['country'] = country
+    context.user_data["registration"]["country"] = country
+    buttons = []
+    reply_markup = create_reply_markup(buttons, texts)
 
-    # Ask for the promo code, showing only the Back button
-    reply_markup = ReplyKeyboardMarkup([[texts['button_back']]], one_time_keyboard=True, resize_keyboard=True)
     await update.message.reply_text(
-        texts.get('ask_promo_code', "🎫 Finally, what is your preferred *promo code* (e.g., 'Linebet2024')?"),
+        texts.get(
+            "ask_promo_code",
+            "🎫 Finally, what is your preferred *promo code* (e.g., 'Linebet2024')?",
+        ),
         reply_markup=reply_markup,
-        parse_mode='Markdown'
+        parse_mode="Markdown",
     )
     return REG_PROMO
 
-
-
-async def save_registration(update, context):
+async def ask_for_promo_code(update, context):
     """
-    Collects the promo code, saves registration data to JSON, and sends a formatted message to the group chat.
+    Handles the user's input for the promo code.
+    Saves the promo code and proceeds to save the registration.
     """
-    lang = context.user_data.get('language', 'en')
+    lang = context.user_data.get("language", "en")
     texts = get_texts(lang)
 
-    # If the user presses Back, return to the registration menu
-    if update.message.text == texts['button_back']:
-        return await start_registration(update, context)
+    # Handle navigation buttons
+    if update.message.text == texts["button_back"]:
+        return await ask_for_country(update, context)
+    if update.message.text == texts["button_main_menu"]:
+        return await main_menu(update, context)
 
     # Save the promo code
     promo_code = update.message.text.strip()
-    context.user_data['registration']['promo'] = promo_code
+    if len(promo_code) > 20:
+        await update.message.reply_text(
+            texts.get(
+                "error_invalid_promo",
+                "❌ Invalid promo code. Please provide a valid promo code (max 20 characters).",
+            ),
+            parse_mode="Markdown",
+        )
+        return REG_PROMO  # Stay in the Promo Code step
 
-    # Collect registration data
+    # Add promo code to registration data
+    context.user_data["registration"]["promo"] = promo_code
+    print("Promo Code Saved:", promo_code)  # Debugging log
+
+    # Notify the user of success
+    # await update.message.reply_text(
+    #     texts.get(
+    #         "registration_complete",
+    #         "✅ Thank you! Your registration is complete. We'll contact you shortly.",
+    #     ),
+    #     reply_markup=ReplyKeyboardMarkup(
+    #         [[texts["button_main_menu"]]],
+    #         one_time_keyboard=True,
+    #         resize_keyboard=True,
+    #     ),
+    #     parse_mode="Markdown",
+    # )
+
+    # Proceed to save the registration
+    return await save_registration(update, context)
+
+async def save_registration(update, context):
+    """
+    Finalizes the registration process by saving data and notifying the admin group.
+    """
+    lang = context.user_data.get("language", "en")
+    texts = get_texts(lang)
+
+    # Retrieve registration data
+    registration_data = context.user_data.get("registration", {})
+    promo_code = registration_data.get("promo", "No Promo Code")  # Default to 'No Promo Code'
+
+    # Collect registration details
     user_id = update.message.from_user.id
-    username = update.message.from_user.username or "N/A"
-    registration_data = context.user_data.get('registration', {})
+    raw_username = update.message.from_user.username
+    username = f"@{raw_username}" if raw_username else "N/A"
 
-    # Save to JSON file
+    # Debugging log
+    print("Full Registration Data:", registration_data)
+
+    # Format the message for the group chat
+    try:
+        from datetime import datetime
+
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        message = f"""
+📝 *New Registration*:
+📅 *Time*: `{timestamp}`
+👤 *Username*: `{escape_markdown(username, version=2)}`
+🧾 *Full Name*: `{escape_markdown(registration_data.get('first_name', '') + ' ' + registration_data.get('last_name', ''), version=2)}`
+📛 *Telegram*: `{escape_markdown(registration_data.get('telegram', ''), version=2)}`
+📧 *Email*: `{escape_markdown(registration_data.get('email', ''), version=2)}`
+📱 *Phone*: `{escape_markdown(registration_data.get('phone', ''), version=2)}`
+🌍 *Country*: `{escape_markdown(registration_data.get('country', ''), version=2)}`
+🎫 *Promo Code*: `{escape_markdown(promo_code, version=2)}`
+        """
+        # Send message to group chat
+        url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
+        payload = {"chat_id": CHAT_ID, "text": message, "parse_mode": "MarkdownV2"}
+        response = requests.post(url, data=payload)
+
+        if response.status_code != 200:
+            print(f"Failed to send message to group chat: {response.text}")
+    except Exception as e:
+        print(f"Error sending data to group chat: {e}")
+
+    # Save to JSON (if desired)
     try:
         file_path = "user_data.json"
         all_data = []
 
-        # Load existing data if the file exists
         if os.path.exists(file_path):
             with open(file_path, "r") as file:
                 all_data = json.load(file)
 
-        # Add the new registration data
         all_data.append({
             "user_id": user_id,
-            "username": username,
+            "username": username,  # Now includes '@'
             "registration_data": registration_data
         })
 
-        # Save updated data back to the file
         with open(file_path, "w") as file:
             json.dump(all_data, file, indent=4)
 
@@ -527,51 +597,15 @@ async def save_registration(update, context):
 
     # Notify the user of successful registration
     await update.message.reply_text(
-        texts.get('registration_success', "✅ Thank you for registering! Our team will contact you shortly."),
-        parse_mode='Markdown'
+        texts.get(
+            "registration_success",
+            "✅ Thank you for registering! Our team will contact you shortly.",
+        ),
+        parse_mode="Markdown"
     )
-
-    # Send the formatted key-value message to the group chat
-    try:
-        # Escape user data to avoid Markdown issues
-        escaped_username = escape_markdown(username, version=2)
-        escaped_email = escape_markdown(registration_data.get('email', 'N/A'), version=2)
-        escaped_phone = escape_markdown(registration_data.get('phone', 'N/A'), version=2)
-        escaped_country = escape_markdown(registration_data.get('country', 'N/A'), version=2)
-        escaped_promo = escape_markdown(registration_data.get('promo', 'N/A'), version=2)
-
-        # Construct the formatted message
-        from datetime import datetime
-        
-        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        message = f"""
-        📝 *New Registration*:
-        📅 *Time*: `{timestamp}`
-        👤 *Username*: `{escaped_username}`
-        📧 *Email*: `{escaped_email}`
-        📱 *Phone*: `{escaped_phone}`
-        🌍 *Country*: `{escaped_country}`
-        🎫 *Promo Code*: `{escaped_promo}`
-        """
-
-
-        url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
-        payload = {
-            "chat_id": CHAT_ID,
-            "text": message,
-            "parse_mode": "MarkdownV2"  # Use MarkdownV2 for proper escaping
-        }
-        response = requests.post(url, data=payload)
-
-        if response.status_code != 200:
-            print(f"Failed to send message to group chat: {response.text}")
-    except Exception as e:
-        print(f"Error sending data to group chat: {e}")
 
     # Return to the main menu
     return MAIN_MENU
-
-
 
 async def fallback(update, context):
     lang = context.user_data.get("language", "en")
@@ -615,13 +649,13 @@ async def registration_info(update, context):
         logger.info(f"User {user_id} ({username}) registration completed: {user_data}")
 
         # Notify the user of successful registration
-        await update.message.reply_text(
-            texts.get(
-                "after_registration_contact",
-                "✅ Thank you! Our team will contact you shortly.",
-            ),
-            parse_mode="Markdown",
-        )
+        # await update.message.reply_text(
+        #     texts.get(
+        #         "after_registration_contact",
+        #         "✅ Thank you! Our team will contact you shortly.",
+        #     ),
+        #     parse_mode="Markdown",
+        # )
 
     except Exception as e:
         # Log the error and notify the user
