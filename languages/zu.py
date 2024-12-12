@@ -66,7 +66,7 @@ texts = {
            "Izinkokhelo zikhokhwa masonto onke ngoLwesibili uma ibhalansi yakho idlula u-$30.\n\n"
            "🎯 *Ngizothola muphi amathuluzi?*\n"
            "Sinikeza ngama-banner, amavidiyo, nezixhumanisi zokumaketha.",
-    'support': "📞 Ngosizo, xhumana nathi kuTelegram: [@Linebet_globe](https://t.me/Linebet_globe).",
+    'support': "📞 Ngosizo, xhumana nathi kuTelegram: [@aff_lb_a](https://t.me/aff_lb_a).",
     'menu_buttons': [
         ['📝 Bhalisela', '💸 Ulwazi Lwekhomishini'],
         ['📈 Izeluleko Zokumaketha', '❓ Imibuzo Ebuzwa Kaningi'],

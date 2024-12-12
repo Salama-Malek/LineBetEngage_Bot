@@ -66,7 +66,7 @@ texts = {
            "Ana yin biyan kuɗi kowane mako ranar Talata idan adadin ku ya wuce $30.\n\n"
            "🎯 *Wane kayan aiki zan samu?*\n"
            "Muna ba da tutoci, bidiyo, da hanyoyin haɗin yanar gizo don tallace-tallace.",
-    'support': "📞 Don taimako, tuntuɓi mu a Telegram: [@Linebet_globe](https://t.me/Linebet_globe).",
+    'support': "📞 Don taimako, tuntuɓi mu a Telegram: [@aff_lb_a](https://t.me/aff_lb_a).",
     'menu_buttons': [
         ['📝 Yi Rijista', '💸 Bayani akan Komisiti'],
         ['📈 Nasihu akan Tallace-Tallace', '❓ Tambayoyin Da Ake Yawan Yi'],

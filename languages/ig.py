@@ -66,7 +66,7 @@ texts = {
            "A na-eme ịkwụ ụgwọ kwa izu ụbọchị Tuesday ma ọ bụrụ na ego gị karịrị $30.\n\n"
            "🎯 *Kedu ngwaọrụ m ga-enweta?*\n"
            "Anyị na-enye ihe ngosi, vidiyo, na njikọ maka mgbasa ozi.",
-    'support': "📞 Maka nkwado, kpọtụrụ anyị na Telegram: [@Linebet_globe](https://t.me/Linebet_globe).",
+    'support': "📞 Maka nkwado, kpọtụrụ anyị na Telegram: [@aff_lb_a](https://t.me/aff_lb_a).",
     'menu_buttons': [
         ['📝 Debanye Aha', '💸 Ozi Maka Nchịkọta'],
         ['📈 Atụmatụ Maka Ahịa', '❓ Ajụjụ Na-ajụkarị'],

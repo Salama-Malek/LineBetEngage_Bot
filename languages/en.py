@@ -67,7 +67,7 @@ texts = {
            "Payouts are made weekly every Tuesday if your balance exceeds $30.\n\n"
            "🎯 *What tools do I get?*\n"
            "We provide banners, videos, and referral links for marketing.",
-    'support': "📞 For support, contact us on Telegram: [@Linebet_globe](https://t.me/Linebet_globe).",
+    'support': "📞 For support, contact us on Telegram: [@aff_lb_a](https://t.me/aff_lb_a).",
     'menu_buttons': [
         ['📝 Register', '💸 Commission Info'],
         ['📈 Marketing Tips', '❓ FAQs'],
